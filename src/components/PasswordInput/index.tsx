@@ -11,40 +11,62 @@ import {
 } from './styles';
 
 interface Props extends TextInputProps {
-  iconName: React.ComponentProps<typeof Feather>['name']
+  iconName: React.ComponentProps<typeof Feather>['name'];
+  value?: string;
 }
 
-export function PasswordInput({ iconName, ...rest }: Props) {
+export function PasswordInput({ iconName, value, ...rest }: Props) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
   const theme = useTheme();
+
+  function handleInputFocus() {
+    setIsFocused(true);
+  };
+
+  function handleInputBlur() {
+    setIsFocused(false);
+    setIsFilled(!!value);
+    
+    if (isFilled) {
+      console.log('preencheu')
+    }
+  };
 
   function handlePasswordVisibilityChange() {
     setIsPasswordVisible(!isPasswordVisible)
-    console.log(isPasswordVisible)
   }
   
   return (
-    <Container>
-      <IconContainer>
+    <Container >
+      <IconContainer isFocused={isFocused}>
         <Feather 
           name={iconName}
           size={24}
-          color={theme.colors.title}
+          color={(isFocused || isFilled) ? theme.colors.main : theme.colors.title}
         />
       </IconContainer>
 
       <InputText 
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
         secureTextEntry={isPasswordVisible}
+        isFocused={isFocused}
         {...rest}
       />
 
-      <ChangePasswordVisibilityButton onPress={handlePasswordVisibilityChange}>
-        <Feather
-          name={isPasswordVisible ? "eye" : "eye-off"}
-          size={24}
-          color={theme.colors.title}
-        />
-      </ChangePasswordVisibilityButton>
+      <IconContainer isFocused={isFocused}>
+        <ChangePasswordVisibilityButton
+          onPress={handlePasswordVisibilityChange}
+        >
+          <Feather
+            name={isPasswordVisible ? "eye" : "eye-off"}
+            size={24}
+            color={theme.colors.title}
+          />
+        </ChangePasswordVisibilityButton>
+      </IconContainer>
     </Container>
   );
 }
