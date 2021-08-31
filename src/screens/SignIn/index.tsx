@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Button } from '../../components/Button';
-
+import { Alert, StatusBar, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 
 import { useTheme } from 'styled-components';
+import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
 
 import {
   Container,
@@ -14,9 +16,7 @@ import {
   Form,
   Footer,
 } from './styles';
-import { Input } from '../../components/Input';
-import { PasswordInput } from '../../components/PasswordInput';
-import { Alert } from 'react-native';
+import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -28,6 +28,8 @@ export function SignIn() {
     email: yup.string().required('e-mail obrigatório').email('Digite um e-mail válido'),
     password: yup.string().required('A senha é obrigatória')
   });
+
+  const navigation = useNavigation<NavigationProps>();
 
   async function handleSignIn() {
     try {
@@ -44,6 +46,10 @@ export function SignIn() {
       console.error(error);
     }
   };
+
+  function handleNewAccount() {
+    navigation.navigate('SignUpFirstStep')
+  }
 
   return (
     <KeyboardAvoidingView behavior="position" enabled>
@@ -90,8 +96,8 @@ export function SignIn() {
             <Button
               title="Criar conta gratuita"
               color={theme.colors.background_secondary}
-              onPress={() => {}}
-              enabled={false}
+              onPress={handleNewAccount}
+              enabled={true}
               loading={false}
               light={true}
             />
