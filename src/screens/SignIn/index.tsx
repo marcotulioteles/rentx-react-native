@@ -17,6 +17,7 @@ import {
   Footer,
 } from './styles';
 import { NavigationProps } from '../../@types/navigate-from-react-navigate';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
@@ -30,13 +31,14 @@ export function SignIn() {
   });
 
   const navigation = useNavigation<NavigationProps>();
+  const { signIn } = useAuth();
 
-  async function handleSignIn() {
+  async function handleSignIn() {  
     try {
       await scheme.validate({ email, password })
       Alert.alert('tudo certo!')
 
-      //fazer login
+      signIn({ email, password });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         return Alert.alert('Opa', error.message);
