@@ -36,7 +36,6 @@ export function SignIn() {
   async function handleSignIn() {  
     try {
       await scheme.validate({ email, password })
-      Alert.alert('tudo certo!')
 
       signIn({ email, password });
     } catch (error) {
