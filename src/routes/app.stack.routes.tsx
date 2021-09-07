@@ -13,7 +13,7 @@ import { MyCars } from '../screens/MyCars';
 export function AppStackRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
-      <Screen name="Home" component={Home}/>
+      <Screen name="HomeScreen" component={Home}/>
       <Screen name="CarDetails" component={CarDetails}/>
       <Screen name="Scheduling" component={Scheduling}/>
       <Screen name="SchedulingDetails" component={SchedulingDetails}/>
