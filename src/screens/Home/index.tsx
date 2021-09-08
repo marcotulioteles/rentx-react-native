@@ -34,7 +34,7 @@ import {
 } from './styles';
 
 export function Home() {
-  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
 
   const netInfo = useNetInfo();
@@ -79,10 +79,10 @@ export function Home() {
     await synchronize({
       database,
       pullChanges: async ({ lastPulledAt }) => {
-        const response = await api
+        const { data } = await api
         .get(`cars/sync/pull?lasPulledVersion=${lastPulledAt || 0}`);
 
-        const { changes, latestVersion } = response.data;
+        const { changes, latestVersion } = data;
         return { changes, timestamp: latestVersion }
       },
       pushChanges: async ({ changes }) => {
@@ -98,10 +98,11 @@ export function Home() {
     async function fetchCars() {
       try {
         // const carCollection = database.get<ModelCar>('cars');
-        // const cars = await carCollection.query().fetch();
+        // const carsDB = await carCollection.query().fetch();
         const response = await api.get('/cars');
 
         if (isMounted) {
+          // console.log(`Conteúdo Carros da API: ${carsDB}`)
           setCars(response.data);
         }
       } catch (error) {
@@ -120,10 +121,15 @@ export function Home() {
   }, []);
 
   useEffect(() => {
-    if (netInfo.isConnected === true) {
+    let isMounted = true;
+
+    if (netInfo.isConnected === true && isMounted) {
       offlineSynchronize();
     }
 
+    return () => {
+      isMounted = false;
+    };
   }, [netInfo.isConnected]);
 
   return (
