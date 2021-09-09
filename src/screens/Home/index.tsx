@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Alert, StatusBar, Button } from 'react-native';  
 import { useNavigation } from '@react-navigation/native';
-import { Alert, StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { synchronize } from '@nozbe/watermelondb/sync';
+import { database } from '../../database';
 
 import { CarDTO } from '../../dtos/CarDTO';
 import { LoadAnimation } from '../../components/LoadAnimation';
@@ -19,6 +21,7 @@ import { LoadAnimation } from '../../components/LoadAnimation';
 import Logo from '../../assets/logo.svg';
 import api from '../../services/api';
 import { Car } from '../../components/Car';
+import { Car as ModelCar } from '../../database/model/Car';
 
 import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 
@@ -31,7 +34,7 @@ import {
 } from './styles';
 
 export function Home() {
-  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
 
   const netInfo = useNetInfo();
@@ -68,6 +71,25 @@ export function Home() {
     navigation.navigate('CarDetails', { car })
   }
 
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api
+        .get(`cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`);
+        
+        const { changes, latestVersion } = response.data;
+        return { changes, timestamp: latestVersion };
+
+      }, 
+      pushChanges: async ({ changes }) => {
+        const user = changes.users;
+        await api.post('/users/sync', user);
+      }
+    });
+  
+  }
+
   function handleOpenMyCars() {
     navigation.navigate('MyCars')
   }
@@ -77,9 +99,14 @@ export function Home() {
 
     async function fetchCars() {
       try {
-        const response = await api.get('/cars');
+        const carCollection = database.get<ModelCar>('cars');
+        const carsDB = await carCollection.query().fetch();
+
+        // const response = await api.get('/cars');
+        console.log(carsDB)
+        
         if (isMounted) {
-          setCars(response.data);
+          setCars(carsDB);
         }
       } catch (error) {
         console.log(error);
@@ -95,14 +122,6 @@ export function Home() {
       isMounted = false;
     };
   }, []);
-
-  useEffect(() => {
-    if (netInfo.isConnected) {
-      Alert.alert('Você está on-line!');
-    } else {
-      Alert.alert('Você está off-line!');
-    }
-  }, [netInfo.isConnected])
 
   return (
     <Container>
@@ -125,6 +144,9 @@ export function Home() {
           }
         </HeaderContent>
       </Header>
+        
+      <Button title="SINCRONIZAR" onPress={offlineSynchronize}/>
+
       {loading ?
         <LoadAnimation /> :
         <CarList
