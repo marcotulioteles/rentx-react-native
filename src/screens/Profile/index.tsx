@@ -30,11 +30,9 @@ import {
   OptionTitle,
   Section,
 } from './styles';
-import { useNetInfo } from '@react-native-community/netinfo';
 
 export function Profile() {
   const { user, signOut, updatedUser } = useAuth();
-  const netInfo = useNetInfo();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
@@ -49,11 +47,7 @@ export function Profile() {
   }
 
   function hendleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
-    if (netInfo.isConnected === false && optionSelected === 'passwordEdit') {
-      Alert.alert('Você está off-line' ,'Para mudar a senha conecte-se a Internet');
-    } else {
-      setOption(optionSelected);
-    }
+    setOption(optionSelected);
   }
 
   async function handleAvatarSelect() {
