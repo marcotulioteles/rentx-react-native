@@ -5662,6 +5662,11 @@ react-native-calendars@^1.1264.0:
   optionalDependencies:
     moment "^2.24.0"
 
+react-native-fast-image@^8.5.6:
+  version "8.5.6"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.6.tgz#3a4062b88bdaa9cf4fc7f7d8e1cd2ee9745d556f"
+  integrity sha512-fkgxxnuvhrrnJQGYDp7H6tk3B9+/V0MK6p6QSGRxlbuQrWqVKPCbikjCgbwmzLDptV0DFlGPtnTkSiRoSqMn0A==
+
 react-native-gesture-handler@~1.10.2:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"
