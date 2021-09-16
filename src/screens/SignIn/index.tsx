@@ -16,7 +16,6 @@ import {
   Form,
   Footer,
 } from './styles';
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
@@ -30,7 +29,7 @@ export function SignIn() {
     password: yup.string().required('A senha é obrigatória')
   });
 
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const { signIn } = useAuth();
 
   async function handleSignIn() {  

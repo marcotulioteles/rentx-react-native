@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StatusBar, Button } from 'react-native';  
+import { StatusBar } from 'react-native';  
 import { useNavigation } from '@react-navigation/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useNetInfo } from '@react-native-community/netinfo';
@@ -23,8 +23,6 @@ import api from '../../services/api';
 import { Car } from '../../components/Car';
 import { Car as ModelCar } from '../../database/model/Car';
 
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
-
 import {
   Container,
   Header,
@@ -38,7 +36,7 @@ export function Home() {
   const [loading, setLoading] = useState(true);
 
   const netInfo = useNetInfo();
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
 
   // const positionY = useSharedValue(0);
   // const positionX = useSharedValue(0);
@@ -80,14 +78,12 @@ export function Home() {
         
         const { changes, latestVersion } = response.data;
         return { changes, timestamp: latestVersion };
-
-      }, 
+      },
       pushChanges: async ({ changes }) => {
         const user = changes.users;
-        await api.post('/users/sync', user);
+        await api.post('/users/sync', user).catch(console.log);
       }
     });
-  
   }
 
   function handleOpenMyCars() {
@@ -103,7 +99,7 @@ export function Home() {
         const carsDB = await carCollection.query().fetch();
 
         // const response = await api.get('/cars');
-        console.log(carsDB)
+        // console.log(carsDB)
         
         if (isMounted) {
           setCars(carsDB);
@@ -122,6 +118,12 @@ export function Home() {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (netInfo.isConnected === true) {
+      offlineSynchronize();
+    }
+  }, [netInfo.isConnected])
 
   return (
     <Container>
@@ -144,9 +146,7 @@ export function Home() {
           }
         </HeaderContent>
       </Header>
-        
-      <Button title="SINCRONIZAR" onPress={offlineSynchronize}/>
-
+      
       {loading ?
         <LoadAnimation /> :
         <CarList

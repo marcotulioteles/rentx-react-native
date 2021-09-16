@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../../@types/navigate-from-react-navigate';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -28,7 +27,7 @@ export function SignUpFirstStep() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [driverLicense, setDriverLicense] = useState('');
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
 
   const scheme = yup.object().shape({
     driverLicense: yup.string().required('Número da CNH é obrigatório'),

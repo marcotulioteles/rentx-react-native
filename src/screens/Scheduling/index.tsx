@@ -10,7 +10,6 @@ import ArrowSvg from '../../assets/arrow.svg'
 
 import { Button } from '../../components/Button';
 import { Calendar, DayProps, generateInterval, MarkedDateProps } from '../../components/Calendar';
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 
 import { getPlatformDate } from '../../utils/getPlatformDate';
 import { CarDTO } from '../../dtos/CarDTO';
@@ -42,7 +41,7 @@ export function Scheduling() {
   const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
 
   const theme = useTheme();
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const route = useRoute();
   const { car } = route.params as Params;
 

@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 
 import * as ImagePicker from 'expo-image-picker';
 import * as yup from 'yup';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useNetInfo } from '@react-native-community/netinfo'; 
 
 import { useAuth } from '../../hooks/auth';
 import { Feather } from '@expo/vector-icons';
@@ -12,7 +13,6 @@ import { useTheme } from 'styled-components';
 import { BackButton } from '../../components/BackButton';
 import { Input } from '../../components/Input';
 
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 import {
   Container,
   Header,
@@ -33,6 +33,7 @@ import { Button } from '../../components/Button';
 
 export function Profile() {
   const { user, signOut, updatedUser } = useAuth();
+  const netInfo = useNetInfo();
 
   const [option, setOption] = useState<'dataEdit' | 'passwordEdit'>('dataEdit');
   const [avatar, setAvatar] = useState(user.avatar);
@@ -40,13 +41,16 @@ export function Profile() {
   const [driverLicense, setDriverLicense] = useState(user.driver_license);
   
   const theme = useTheme();
-  const navigation = useNavigation<NavigationProps>()
+  const navigation = useNavigation()
 
   function handleBack() {
     navigation.goBack();
   }
 
   function hendleOptionChange(optionSelected: 'dataEdit' | 'passwordEdit') {
+    if (netInfo.isConnected === false && optionSelected === 'passwordEdit') {
+      Alert.alert('Você está offline!', 'Para mudar a senha, conecte-se à Internet.')
+    }
     setOption(optionSelected);
   }
 

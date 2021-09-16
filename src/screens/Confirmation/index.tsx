@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigation, useRoute } from  '@react-navigation/native';
 import { StatusBar, useWindowDimensions } from 'react-native'
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 
 import LogoSvg from '../../assets/logo_background_gray.svg';
 import DoneSvg from '../../assets/done.svg';
@@ -19,13 +18,13 @@ import {
 interface Params {
   title: string;
   message: string;
-  nextScreenRoute: string;
+  nextScreenRoute: any;
 }
 
 export function Confirmation() {
   const { width } = useWindowDimensions();
 
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const route = useRoute();
   const { title, message, nextScreenRoute } = route.params as Params;
 

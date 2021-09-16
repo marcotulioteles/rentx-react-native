@@ -4,7 +4,6 @@ import BrandSvg from '../../assets/brand.svg';
 import LogoSvg from '../../assets/logo.svg';
 
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../@types/navigate-from-react-navigate';
 
 import Animated, {
   useAnimatedStyle,
@@ -21,7 +20,7 @@ import {
 
 export function Splash() {
   const splashAnimation = useSharedValue(0);
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
 
   const brandStyle = useAnimatedStyle(() => {
     return {

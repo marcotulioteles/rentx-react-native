@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { useTheme } from 'styled-components';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { NavigationProps } from '../../../@types/navigate-from-react-navigate';
 
 import { BackButton } from '../../../components/BackButton';
 import { Bullet } from '../../../components/Bullet';
@@ -38,7 +37,7 @@ export function SignUpSecondStep() {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const route = useRoute();
   const theme = useTheme();
 
