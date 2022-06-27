@@ -32,6 +32,13 @@ The easiest way to run the project is using Expo to emulate the application dire
 yarn
 ```
 
+- If you already installed Expo Go on your mobile device and Expo CLI on your machine you, from the folder project in a terminal you can run:
+```bash
+expo start
+```
+
+- then open the Expo Go in your mobile device and scan the QR code that was open in your terminal.
+
 🏄🏻 Now you can navigate on it. Have fun!
 
 
@@ -43,6 +50,12 @@ The following tools were used in the construction of the project:
 
 - [Typescript](https://www.typescriptlang.org/)
 
+- [Axios](https://axios-http.com/docs/intro)
+
+- [Expo](https://docs.expo.dev/get-started/installation/)
+
+- [WatermelonDB](https://github.com/Nozbe/WatermelonDB/blob/master/README.md)
+
 
 ## 👨🏻‍💻 Author
-Marco Tulio Teles - challenge build for the Tech Challenge by [GrupoAcert](https://www.grupoacert.com.br/)
+Marco Tulio Teles
