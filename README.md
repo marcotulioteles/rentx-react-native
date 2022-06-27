@@ -8,7 +8,7 @@ RENTX is a mobile application where you can easily rent the best cars in the wor
 ## 📸 Screenshots
 
 <p align="center">
-  ![](/public/screenshots/home.png)
+  <img src="/public/screenshots/home.png"/>
 </p>
 
 
