@@ -6,7 +6,8 @@ Mobile App to rent cars
 RENTX is a mobile application where you can easily rent the best cars in the world.
 
 ## 📸 Screenshots
-![](/src/assets/screenshots/home.png)
+
+![](/public/screenshots/home.png)
 
 ## ✅ Pre-requisites
 
